@@ -21,6 +21,4 @@ jobs:
         working-directory: C:\Users\goodxdev    
     steps:
     - uses: actions/checkout@v2
-    - run: |
-        echo "Hello ${{ github.event.inputs.name }}!" > C:\Users\goodxdev\actions.log
-        echo "- in ${{ github.event.inputs.home }}!" >> C:\Users\goodxdev\actions.log
+    - run: copy C:\actions2\_work\hello-github-actions\hello-github-actions\README.md C:\Users\goodxdev
