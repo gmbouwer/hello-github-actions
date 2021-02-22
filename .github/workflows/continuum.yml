@@ -17,7 +17,7 @@ jobs:
     runs-on: continuum
     defaults:
       run:
-        shell: bash
+        shell: cmd
         working-directory: C:\Users\goodxdev    
     steps:
     - uses: actions/checkout@v2
