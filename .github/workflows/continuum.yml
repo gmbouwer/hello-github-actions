@@ -15,8 +15,12 @@ jobs:
   say_hello:
     name: Say hello on continuum
     runs-on: continuum
+    defaults:
+      run:
+        shell: bash
+        working-directory: C:\Users\goodxdev    
     steps:
     - uses: actions/checkout@v2
     - run: |
-        echo "Hello ${{ github.event.inputs.name }}!"
-        echo "- in ${{ github.event.inputs.home }}!"
+        echo "Hello ${{ github.event.inputs.name }}!" > C:\Users\goodxdev\actions.log
+        echo "- in ${{ github.event.inputs.home }}!" >> C:\Users\goodxdev\actions.log
