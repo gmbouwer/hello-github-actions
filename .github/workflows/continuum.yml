@@ -20,5 +20,9 @@ jobs:
         shell: cmd
         working-directory: C:\Users\goodxdev    
     steps:
-    - uses: actions/checkout@v2
-    - run: copy C:\actions2\_work\hello-github-actions\hello-github-actions\README.md C:\Users\goodxdev
+    - name: checkout repo
+      uses: actions/checkout@v2
+    - name: copy file after checkout
+      run: copy C:\actions2\_work\hello-github-actions\hello-github-actions\README.md C:\Users\goodxdev
+    - name: execute py script # run the run.py to get the latest data
+      run: python C:\Users\goodxdev\hello-world.py
