@@ -1,0 +1,16 @@
+name: Branch name vaidator
+on: 
+  push
+
+jobs:
+  build:
+    name: check branch name
+    steps:
+      - uses: deepakputhraya/action-branch-name@v1.0.0
+        with:
+          regex: '\d+_[a-z0-9_]+' # Regex the branch should match. This example enforces grouping
+          ignore: main,master,develop # Ignore exactly matching branch names from convention
+          min_length: 5 # Min length of the branch name
+          max_length: 20 # Max length of the branch name
+          
+          
