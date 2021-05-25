@@ -15,6 +15,7 @@ jobs:
       - name: remove non-merge labels
         uses: actions-ecosystem/action-remove-labels@v1
         with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           labels: |
             CodeReview
             Testing
@@ -22,5 +23,6 @@ jobs:
       - name: add merge labels
         uses: actions-ecosystem/action-add-labels@v1
         with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           labels: |
             ToBeTested
