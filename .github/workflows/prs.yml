@@ -1,0 +1,26 @@
+
+name: PR handler
+on:
+  pull_request:
+    types: [ opened, closed, reopened ]
+
+
+jobs:
+  mark-as-merged:
+    if: ${{ github.event.action == 'closed' && github.event.pull_request.merged == true }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: remove non-merge labels
+        uses: actions-ecosystem/action-remove-labels@v1
+        with:
+          labels: |
+            CodeReview
+            Testing
+            Assigned
+      - name: add merge labels
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          labels: |
+            ToBeTested
