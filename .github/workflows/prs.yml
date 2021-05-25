@@ -26,3 +26,24 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           labels: |
             ToBeTested
+
+  mark-as-cr:
+    if: ${{ github.event.action.contains('opened', 'reopened') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: remove non-merge labels
+        uses: actions-ecosystem/action-remove-labels@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: |
+            Testing
+            Assigned
+            ToBeTested
+      - name: add merge labels
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: |
+            CodeReview
