@@ -1,3 +1,4 @@
+---
 
 name: PR handler
 on:
@@ -8,22 +9,25 @@ on:
 
 
 jobs:
-  mark-as-merged:
-    if: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true }}
+  remove-all-labels:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: remove non-merge labels
+      - name: remove all labels
         uses: actions-ecosystem/action-remove-labels@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           labels: |
-            CodeReview
-            TestForMerge
             Assigned
             ChangesRequested
-      - name: add merge labels
+            CodeReview
+            TestForMerge
+            ToBeTested
+
+  mark-as-merged:
+    if: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: add MERGED label
         uses: actions-ecosystem/action-add-labels@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -34,18 +38,7 @@ jobs:
     if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: remove non-merge labels
-        uses: actions-ecosystem/action-remove-labels@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          labels: |
-            TestForMerge
-            Assigned
-            ToBeTested
-            ChangesRequested
-      - name: add merge labels
+      - name: add CR label
         uses: actions-ecosystem/action-add-labels@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -56,18 +49,7 @@ jobs:
     if: ${{ github.event_name == 'pull_request_review' && github.event.review.state == 'approved' }}
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: remove non-merge labels
-        uses: actions-ecosystem/action-remove-labels@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          labels: |
-            CodeReview
-            Assigned
-            ToBeTested
-            ChangesRequested
-      - name: add merge labels
+      - name: add TFM label
         uses: actions-ecosystem/action-add-labels@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -78,18 +60,7 @@ jobs:
     if: ${{ github.event_name == 'pull_request_review' && github.event.review.state == 'changes_requested' }}
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: remove non-merge labels
-        uses: actions-ecosystem/action-remove-labels@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          labels: |
-            CodeReview
-            Assigned
-            ToBeTested
-            TestForMerge
-      - name: add merge labels
+      - name: add ASSIGNED label
         uses: actions-ecosystem/action-add-labels@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
