@@ -31,8 +31,7 @@ jobs:
         uses: actions-ecosystem/action-add-labels@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          labels: |
-            ToBeTested
+          labels: ToBeTested
 
   mark-as-cr:
     if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
@@ -42,8 +41,7 @@ jobs:
         uses: actions-ecosystem/action-add-labels@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          labels: |
-            CodeReview
+          labels: CodeReview
 
   mark-as-pr-approved:
     if: ${{ github.event_name == 'pull_request_review' && github.event.review.state == 'approved' }}
@@ -53,8 +51,7 @@ jobs:
         uses: actions-ecosystem/action-add-labels@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          labels: |
-            TestForMerge
+          labels: TestForMerge
 
   mark-as-pr-changes:
     if: ${{ github.event_name == 'pull_request_review' && github.event.review.state == 'changes_requested' }}
@@ -64,5 +61,4 @@ jobs:
         uses: actions-ecosystem/action-add-labels@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          labels: |
-            ChangesRequested
+          labels: ChangesRequested
