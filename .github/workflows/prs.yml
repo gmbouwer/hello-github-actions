@@ -3,11 +3,13 @@ name: PR handler
 on:
   pull_request:
     types: [ opened, closed, reopened ]
+  pull_request_review:
+      types: [ submitted ]
 
 
 jobs:
   mark-as-merged:
-    if: ${{ github.event.action == 'closed' && github.event.pull_request.merged == true }}
+    if: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true }}
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -18,8 +20,9 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           labels: |
             CodeReview
-            Testing
+            TestForMerge
             Assigned
+            ChangesRequested
       - name: add merge labels
         uses: actions-ecosystem/action-add-labels@v1
         with:
@@ -28,7 +31,7 @@ jobs:
             ToBeTested
 
   mark-as-cr:
-    if: ${{ github.event.action != 'closed' }}
+    if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -38,12 +41,57 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           labels: |
-            Testing
+            TestForMerge
             Assigned
             ToBeTested
+            ChangesRequested
       - name: add merge labels
         uses: actions-ecosystem/action-add-labels@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           labels: |
             CodeReview
+
+  mark-as-pr-approved:
+    if: ${{ github.event_name == 'pull_request_review' && github.event.review.state == 'approved' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: remove non-merge labels
+        uses: actions-ecosystem/action-remove-labels@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: |
+            CodeReview
+            Assigned
+            ToBeTested
+            ChangesRequested
+      - name: add merge labels
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: |
+            TestForMerge
+
+  mark-as-pr-changes:
+    if: ${{ github.event_name == 'pull_request_review' && github.event.review.state == 'changes_requested' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: remove non-merge labels
+        uses: actions-ecosystem/action-remove-labels@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: |
+            CodeReview
+            Assigned
+            ToBeTested
+            TestForMerge
+      - name: add merge labels
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: |
+            ChangesRequested
