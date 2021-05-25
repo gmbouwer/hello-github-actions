@@ -28,7 +28,7 @@ jobs:
             ToBeTested
 
   mark-as-cr:
-    if: ${{ github.event.action.contains('opened', 'reopened') }}
+    if: ${{ github.event.action != 'closed' }}
     runs-on: ubuntu-latest
     steps:
       - name: checkout
