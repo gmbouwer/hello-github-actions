@@ -2,6 +2,10 @@ name: A workflow for my Hello World file
 # manual
 on:
   workflow_dispatch:
+    inputs:
+      branch_name:
+        description: 'Branch name'
+        required: true  
   pull_request:
     types: [ opened, reopened ]
 jobs:
@@ -18,6 +22,6 @@ jobs:
       - name: echo-context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
-          GITHUB_BRANCH: ${{ github.head_ref }}
+          GITHUB_BRANCH: ${{ github.event.inputs.branch_name || github.head_ref }}
           GITHUB_MAIN: ${{ github.ref }}      
         run: echo BRANCH "$GITHUB_BRANCH" && echo MAIN "$GITHUB_MAIN" && echo CONTEXT "$GITHUB_CONTEXT"
