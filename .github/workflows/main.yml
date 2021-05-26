@@ -10,3 +10,6 @@ jobs:
       - uses: ./action-a
         with:
           MY_NAME: "Mona"
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
