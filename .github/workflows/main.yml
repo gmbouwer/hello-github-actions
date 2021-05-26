@@ -18,4 +18,6 @@ jobs:
       - name: echo-context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
+          GITHUB_BRANCH: ${{ github.head_ref }}
+          GITHUB_MAIN: ${{ github.ref }}      
+        run: echo BRANCH "$GITHUB_BRANCH" && echo MAIN "$GITHUB_MAIN" && echo CONTEXT "$GITHUB_CONTEXT"
