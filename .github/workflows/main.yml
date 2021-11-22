@@ -8,6 +8,9 @@ on:
         required: true  
   pull_request:
     types: [ opened, reopened ]
+  pull_request_review:
+    types: [ submitted ]
+    
 jobs:
   build:
     name: Hello world action
